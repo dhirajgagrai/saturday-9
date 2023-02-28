@@ -1,0 +1,108 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import Vote from "../components/Vote.svelte";
+---
+
+<Layout title="Saturday Night at 9">
+    <main>
+        <div class="header">
+            <h1 class="title">
+                <span>Saturday Night&nbsp;</span>
+                <span class="text-gradient">at 9</span>
+            </h1>
+        </div>
+        <div class="content">
+            <p class="instructions">
+                To prevent spam and cast votes Discord account is required.
+                <a href="/login">Login</a>
+            </p>
+            <ul role="list" class="link-card-grid">
+                <Card
+                    href="/archive"
+                    title="Archive"
+                    body="Archive of the movies that we have already watched."
+                />
+                <Card
+                    href="/discord"
+                    title="Discord"
+                    body="Join our Discord to attend Saturday Night at 9."
+                />
+            </ul>
+        </div>
+
+        <h2>Vote for next Saturday</h2>
+        <div class="vote-container">
+            <Vote
+                title="Argo"
+                img_url="https://upload.wikimedia.org/wikipedia/en/e/e1/Argo2012Poster.jpg"
+            />
+            <Vote
+                title="The Shining"
+                img_url="https://upload.wikimedia.org/wikipedia/en/1/1d/The_Shining_%281980%29_U.K._release_poster_-_The_tide_of_terror_that_swept_America_IS_HERE.jpg"
+            />
+            <Vote
+                title="Goodfellas"
+                img_url="https://upload.wikimedia.org/wikipedia/en/7/7b/Goodfellas.jpg"
+            />
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        padding: 1.5rem;
+        max-width: 60ch;
+    }
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin: 0;
+    }
+    h2 {
+        text-align: center;
+    }
+    .title {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .header {
+        text-align: center;
+    }
+    .content {
+        margin: 2.5em 0 1.5em 0;
+    }
+    .text-gradient {
+        background-image: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400%;
+        background-position: 0%;
+    }
+    .instructions {
+        line-height: 1.6;
+        margin: 1rem 0;
+        border: 1px solid rgba(var(--accent), 25%);
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.4rem;
+    }
+    .instructions strong {
+        color: rgb(var(--accent));
+    }
+    .link-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+        gap: 1rem;
+        padding: 0;
+    }
+    .vote-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(12ch, 1fr));
+        gap: 1em;
+    }
+</style>
