@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import Vote from "../components/Vote.svelte";
+import Login from "../components/Login.svelte";
 ---
 
 <Layout title="Saturday Night at 9">
@@ -13,10 +14,7 @@ import Vote from "../components/Vote.svelte";
             </h1>
         </div>
         <div class="content">
-            <p class="instructions">
-                To prevent spam and cast votes Discord account is required.
-                <a href="/login">Login</a>
-            </p>
+            <Login client:only />
             <ul role="list" class="link-card-grid">
                 <Card
                     href="/archive"
@@ -82,17 +80,6 @@ import Vote from "../components/Vote.svelte";
         -webkit-text-fill-color: transparent;
         background-size: 400%;
         background-position: 0%;
-    }
-    .instructions {
-        line-height: 1.6;
-        margin: 1rem 0;
-        border: 1px solid rgba(var(--accent), 25%);
-        background-color: white;
-        padding: 1rem;
-        border-radius: 0.4rem;
-    }
-    .instructions strong {
-        color: rgb(var(--accent));
     }
     .link-card-grid {
         display: grid;
