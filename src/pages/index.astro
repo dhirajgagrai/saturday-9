@@ -43,21 +43,22 @@ const { data }: { data: MovieData[] | null } = await supabase
             </ul>
         </div>
 
-        {
-            data?.length && (
-                <div class="vote-container">
-                    <h2>Vote for next Saturday</h2>
-                    <div class="vote-card-container">
-                        {data.map(({ movies: m }) => (
-                            <Vote
-                                title={m.name}
-                                img_url={m.img_url}
-                            />
-                        ))}
-                    </div>
-                </div>
-            )
-        }
+        <div class="vote-container">
+            {
+                data?.length ? (
+                    <>
+                        <h2>Vote for next Saturday</h2>
+                        <div class="vote-card-container">
+                            {data.map(({ movies: m }) => (
+                                <Vote title={m.name} img_url={m.img_url} />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <h2>Wait for voting to start</h2>
+                )
+            }
+        </div>
     </main>
 </Layout>
 
