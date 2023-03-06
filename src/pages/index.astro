@@ -50,7 +50,12 @@ const { data }: { data: MovieData[] | null } = await supabase
                         <h2>Vote for next Saturday</h2>
                         <div class="vote-card-container">
                             {data.map(({ movies: m }) => (
-                                <Vote title={m.name} img_url={m.img_url} />
+                                <Vote
+                                    id={m.id}
+                                    title={m.name}
+                                    img_url={m.img_url}
+                                    client:load
+                                />
                             ))}
                         </div>
                     </>

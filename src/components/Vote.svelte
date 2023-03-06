@@ -1,6 +1,21 @@
-<script>
-    export let title;
-    export let img_url;
+<script lang="ts">
+    import supabase from "../config/supabase";
+
+    export let id: Number;
+    export let title: String;
+    export let img_url: String;
+
+    async function voteMovie(movie_id: Number) {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+            const { data, error } = await supabase
+                .from("user_votes")
+                .upsert({ user_id: user.id, voted_movie: movie_id });
+        }
+    }
 </script>
 
 <div class="vote-card" style="background-image: url({img_url});">
@@ -8,7 +23,7 @@
         <h2>
             {title}
         </h2>
-        <button class="vote-button">
+        <button class="vote-button" on:click={() => voteMovie(id)}>
             <h2>Vote</h2>
         </button>
     </div>
