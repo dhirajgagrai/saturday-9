@@ -1,5 +1,5 @@
 {
-	"name": "saturday-night-at-9",
+	"name": "saturday9",
 	"type": "module",
 	"scripts": {
 		"dev": "astro dev",
