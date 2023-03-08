@@ -43,7 +43,7 @@ const { data: moviesData }: { data: MovieData[] | null } = await supabase
                         <h2>Vote for next Saturday</h2>
                         <Vote
                             moviesData={moviesData}
-                            client:load
+                            client:only
                         />
                     </>
                 ) : (

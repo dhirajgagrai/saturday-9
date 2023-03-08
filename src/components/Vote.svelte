@@ -10,17 +10,16 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Session, User } from "@supabase/supabase-js";
+    import type { User } from "@supabase/supabase-js";
 
     import supabase from "@config/supabase";
 
     export let moviesData: MovieData[];
 
     let votedMovie: number = 0;
-    let userSession: Session | null;
 
     supabase.auth.onAuthStateChange((event, session) => {
-        userSession = session;
+        getVotedMovie(session?.user)
     });
 
     onMount(async () => {
@@ -30,8 +29,6 @@
 
         getVotedMovie(session?.user);
     });
-
-    $: getVotedMovie(userSession?.user);
 
     async function getVotedMovie(user: User | undefined) {
         if (!user) {
@@ -43,8 +40,7 @@
             .from("user_votes")
             .select("voted_movie")
             .eq("user_id", user.id)
-            .limit(1)
-            .single();
+            .maybeSingle();
 
         votedMovie = data?.voted_movie;
     }
@@ -61,8 +57,9 @@
         await supabase
             .from("user_votes")
             .upsert({ user_id: session.user.id, voted_movie: movie_id });
-
         votedMovie = movie_id;
+
+        await supabase.rpc("count_votes");
     }
 </script>
 

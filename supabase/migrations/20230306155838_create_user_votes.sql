@@ -26,7 +26,7 @@ to authenticated
 with check ((auth.uid() = user_id));
 
 
-create policy "Enable read access for all users"
+create policy "Enable read access for authenticated users"
 on "public"."user_votes"
 as permissive
 for select
