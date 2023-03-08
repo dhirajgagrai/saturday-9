@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { User } from "@supabase/supabase-js";
-    import supabase from "../config/supabase";
+    import supabase from "@config/supabase";
 
     let user: User | undefined = undefined;
 

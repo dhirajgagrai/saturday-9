@@ -1,11 +1,11 @@
 ---
-import type { MovieData } from "../components/Vote.svelte";
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
-import Vote from "../components/Vote.svelte";
-import Login from "../components/Login.svelte";
+import type { MovieData } from "@components/Vote.svelte";
+import Layout from "@layouts/Layout.astro";
+import Card from "@components/Card.astro";
+import Vote from "@components/Vote.svelte";
+import Login from "@components/Login.svelte";
 
-import supabase from "../config/supabase";
+import supabase from "@config/supabase";
 
 const { data: moviesData }: { data: MovieData[] | null } = await supabase
     .from("active_movies")

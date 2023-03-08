@@ -9,10 +9,10 @@
 </script>
 
 <script lang="ts">
-    import type { Session, User } from "@supabase/supabase-js";
     import { onMount } from "svelte";
+    import type { Session, User } from "@supabase/supabase-js";
 
-    import supabase from "../config/supabase";
+    import supabase from "@config/supabase";
 
     export let moviesData: MovieData[];
 
