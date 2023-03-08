@@ -54,10 +54,11 @@
             return;
         }
 
+        votedMovie = movie_id;
+
         await supabase
             .from("user_votes")
             .upsert({ user_id: session.user.id, voted_movie: movie_id });
-        votedMovie = movie_id;
 
         await supabase.rpc("count_votes");
     }
