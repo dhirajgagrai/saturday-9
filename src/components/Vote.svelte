@@ -7,14 +7,16 @@
 
     async function voteMovie(movie_id: Number) {
         const {
-            data: { user },
-        } = await supabase.auth.getUser();
+            data: { session },
+        } = await supabase.auth.getSession();
 
-        if (user) {
-            const { data, error } = await supabase
-                .from("user_votes")
-                .upsert({ user_id: user.id, voted_movie: movie_id });
+        if (!session?.user) {
+            return;
         }
+
+        await supabase
+            .from("user_votes")
+            .upsert({ user_id: session.user.id, voted_movie: movie_id });
     }
 </script>
 

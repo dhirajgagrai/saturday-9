@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
+    import type { User } from "@supabase/supabase-js";
     import supabase from "../config/supabase";
 
-    let user = undefined;
+    let user: User | undefined = undefined;
 
     supabase.auth.getSession().then(({ data }) => {
         user = data.session?.user;
     });
 
     async function signInWithDiscord() {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        await supabase.auth.signInWithOAuth({
             provider: "discord",
         });
     }
