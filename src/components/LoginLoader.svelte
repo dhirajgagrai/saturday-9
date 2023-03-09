@@ -1,12 +1,20 @@
 <script>
-    import Loader from "./Loader.svelte";
+    import { onMount } from "svelte";
+
+    let Component;
+
+    onMount(async () => {
+        Component = (await import("./Login.svelte")).default;
+    });
 </script>
 
-<Loader this={() => import("./Login.svelte")}>
-    <div class="skeleton-wrapper" slot="fallback">
+<svelte:component this={Component} />
+
+{#if !Component}
+    <div class="skeleton-wrapper">
         <div class="skeleton"><p>&nbsp;</p></div>
     </div>
-</Loader>
+{/if}
 
 <style>
     p {
