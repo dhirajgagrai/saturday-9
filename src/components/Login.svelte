@@ -3,9 +3,11 @@
     import supabase from "@config/supabase";
 
     let user: User | undefined = undefined;
+    let loading: boolean = true;
 
     supabase.auth.getSession().then(({ data }) => {
         user = data.session?.user;
+        loading = false;
     });
 
     async function signInWithDiscord() {
@@ -22,7 +24,11 @@
     }
 </script>
 
-{#if user}
+{#if loading}
+    <div class="instructions">
+        <div class="skeleton"><p>&nbsp;</p></div>
+    </div>
+{:else if user}
     <div class="instructions logged-in">
         <p class="text">
             Signed in as <span class="username">{user.user_metadata.name}</span
@@ -78,5 +84,20 @@
     }
     .username {
         color: rgb(var(--accent));
+    }
+
+    .skeleton {
+        background-color: #f6f6f6;
+        height: 100%;
+        border-radius: 0.6rem;
+        animation: skeleton-loading 1.2s ease-in-out infinite;
+    }
+    @keyframes skeleton-loading {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
     }
 </style>

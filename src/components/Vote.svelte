@@ -16,6 +16,7 @@
 
     let activeMovies: MovieData[];
     let votedMovie: number = 0;
+    let loading: boolean = true;
 
     supabase.auth.onAuthStateChange((event, session) => {
         if (!session?.user) {
@@ -28,14 +29,14 @@
             data: { session },
         } = await supabase.auth.getSession();
 
-        const { data: moviesData }: { data: MovieData[] | null } = await supabase
-            .from("active_movies")
-            .select("movies(*)");
+        const { data: moviesData }: { data: MovieData[] | null } =
+            await supabase.from("active_movies").select("movies(*)");
         if (moviesData) {
             activeMovies = moviesData;
         }
 
         await getVotedMovie(session?.user);
+        loading = false;
     });
 
     async function getVotedMovie(user: User | undefined) {
@@ -70,8 +71,15 @@
     }
 </script>
 
-{#if !activeMovies}
-    <h2 class="vote-status">Wait for voting to start</h2>
+{#if loading}
+    <div class="skeleton-wrapper-h">
+        <div class="skeleton" />
+    </div>
+    <div class="skeleton-wrapper">
+        <div class="skeleton" />
+    </div>
+{:else if !activeMovies}
+    <h2 class="vote-status">No voting for this week</h2>
 {:else}
     <h2 class="vote-status">Vote for next Saturday</h2>
     <div class="vote-card-container">
@@ -175,5 +183,32 @@
     }
     .vote-button:is(:hover) {
         background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .skeleton-wrapper-h {
+        overflow: hidden;
+        height: 2.5rem;
+        margin-block-start: 0.83em;
+        border-radius: 0.6rem;
+    }
+    .skeleton-wrapper {
+        overflow: hidden;
+        height: 13.5rem;
+        margin-block-start: 0.83em;
+        border-radius: 0.6rem;
+    }
+    .skeleton {
+        background-color: #fff;
+        height: 100%;
+        border-radius: 0.6rem;
+        animation: skeleton-loading 1.2s ease-in-out infinite;
+    }
+    @keyframes skeleton-loading {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
     }
 </style>
