@@ -8,7 +8,7 @@
         Component = (await loader()).default;
     });
 
-	export { loader as this };
+    export { loader as this };
 </script>
 
 <svelte:component this={Component} />
