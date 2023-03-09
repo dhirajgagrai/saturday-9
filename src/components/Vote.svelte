@@ -19,7 +19,9 @@
     let votedMovie: number = 0;
 
     supabase.auth.onAuthStateChange((event, session) => {
-        getVotedMovie(session?.user)
+        if (!session?.user) {
+            votedMovie = 0;
+        }
     });
 
     onMount(async () => {
