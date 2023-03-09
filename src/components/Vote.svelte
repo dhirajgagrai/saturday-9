@@ -14,8 +14,7 @@
 
     import supabase from "@config/supabase";
 
-    export let moviesData: MovieData[];
-
+    let activeMovies: MovieData[];
     let votedMovie: number = 0;
 
     supabase.auth.onAuthStateChange((event, session) => {
@@ -29,7 +28,14 @@
             data: { session },
         } = await supabase.auth.getSession();
 
-        getVotedMovie(session?.user);
+        const { data: moviesData }: { data: MovieData[] | null } = await supabase
+            .from("active_movies")
+            .select("movies(*)");
+        if (moviesData) {
+            activeMovies = moviesData;
+        }
+
+        await getVotedMovie(session?.user);
     });
 
     async function getVotedMovie(user: User | undefined) {
@@ -43,7 +49,6 @@
             .select("voted_movie")
             .eq("user_id", user.id)
             .maybeSingle();
-
         votedMovie = data?.voted_movie;
     }
 
@@ -61,42 +66,49 @@
         await supabase
             .from("user_votes")
             .upsert({ user_id: session.user.id, voted_movie: movie_id });
-
         await supabase.rpc("count_votes");
     }
 </script>
 
-<div class="vote-card-container">
-    {#each moviesData as { movies: m }}
-        <div
-            class={votedMovie && votedMovie === m.id
-                ? "vote-card-focused"
-                : "vote-card"}
-            style="background-image: url({m.img_url});"
-        >
-            <div class="card-gradient">
-                <h2>
-                    {m.name}
-                </h2>
-                {#if votedMovie && votedMovie === m.id}
-                    <button class="vote-button">
-                        <h2>Voted</h2>
-                    </button>
-                {:else}
-                    <button
-                        class="vote-button"
-                        on:click={() => voteMovie(m.id)}
-                    >
-                        <h2>Vote</h2>
-                    </button>
-                {/if}
+{#if !activeMovies}
+    <h2 class="vote-status">Wait for voting to start</h2>
+{:else}
+    <h2 class="vote-status">Vote for next Saturday</h2>
+    <div class="vote-card-container">
+        {#each activeMovies as { movies: m }}
+            <div
+                class={votedMovie && votedMovie === m.id
+                    ? "vote-card-focused"
+                    : "vote-card"}
+                style="background-image: url({m.img_url});"
+            >
+                <div class="card-gradient">
+                    <h2 class="card-h">
+                        {m.name}
+                    </h2>
+                    {#if votedMovie && votedMovie === m.id}
+                        <button class="vote-button">
+                            <h2 class="card-h">Voted</h2>
+                        </button>
+                    {:else}
+                        <button
+                            class="vote-button"
+                            on:click={() => voteMovie(m.id)}
+                        >
+                            <h2 class="card-h">Vote</h2>
+                        </button>
+                    {/if}
+                </div>
             </div>
-        </div>
-    {/each}
-</div>
+        {/each}
+    </div>
+{/if}
 
 <style>
-    h2 {
+    .vote-status {
+        text-align: center;
+    }
+    .card-h {
         margin: 0;
         font-family: Staatliches, sans-serif;
         color: white;
