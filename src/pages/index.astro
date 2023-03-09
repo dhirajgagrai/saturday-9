@@ -2,7 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import Card from "@components/Card.astro";
 import Vote from "@components/Vote.svelte";
-import Login from "@components/Login.svelte";
+import LoginLoader from "@components/LoginLoader.svelte";
 ---
 
 <Layout title="Saturday Night at 9">
@@ -13,8 +13,9 @@ import Login from "@components/Login.svelte";
                 <span class="text-gradient">at 9</span>
             </h1>
         </div>
+
         <div class="content">
-            <Login client:only />
+            <LoginLoader client:only />
             <ul role="list" class="link-card-grid">
                 <Card
                     href="/archive"
