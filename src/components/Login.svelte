@@ -1,13 +1,17 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import type { User } from "@supabase/supabase-js";
+
     import supabase from "@config/supabase";
 
     let user: User | undefined = undefined;
     let loading: boolean = true;
 
-    supabase.auth.getSession().then(({ data }) => {
-        user = data.session?.user;
-        loading = false;
+    onMount(async () => {
+        supabase.auth.getSession().then(({ data }) => {
+            user = data.session?.user;
+            loading = false;
+        });
     });
 
     async function signInWithDiscord() {
