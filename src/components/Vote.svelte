@@ -1,18 +1,16 @@
-<script lang="ts" context="module">
-    export interface MovieData {
+<script lang="ts">
+    import { onMount } from "svelte";
+    import type { User } from "@supabase/supabase-js";
+
+    import supabase from "@config/supabase";
+
+    interface MovieData {
         movies: {
             id: number;
             name: string;
             img_url: string;
         };
     }
-</script>
-
-<script lang="ts">
-    import { onMount } from "svelte";
-    import type { User } from "@supabase/supabase-js";
-
-    import supabase from "@config/supabase";
 
     let activeMovies: MovieData[];
     let votedMovie: number = 0;
@@ -72,11 +70,8 @@
 </script>
 
 {#if loading}
-    <div class="skeleton-wrapper-h">
-        <div class="skeleton" />
-    </div>
     <div class="skeleton-wrapper">
-        <div class="skeleton" />
+        <div class="skeleton"><h2>&nbsp;</h2></div>
     </div>
 {:else if !activeMovies}
     <h2 class="vote-status">No voting for this week</h2>
@@ -185,16 +180,8 @@
         background-color: rgba(255, 255, 255, 0.3);
     }
 
-    .skeleton-wrapper-h {
-        overflow: hidden;
-        height: 2.5rem;
-        margin-block-start: 0.83em;
-        border-radius: 0.6rem;
-    }
     .skeleton-wrapper {
         overflow: hidden;
-        height: 13.5rem;
-        margin-block-start: 0.83em;
         border-radius: 0.6rem;
     }
     .skeleton {

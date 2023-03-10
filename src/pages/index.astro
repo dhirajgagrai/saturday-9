@@ -15,7 +15,6 @@ import LoginLoader from "@components/LoginLoader.svelte";
         </div>
 
         <div class="content">
-            <LoginLoader client:only />
             <ul role="list" class="link-card-grid">
                 <Card
                     href="/archive"
@@ -28,6 +27,7 @@ import LoginLoader from "@components/LoginLoader.svelte";
                     body="Join our Discord to attend Saturday Night at 9."
                 />
             </ul>
+            <LoginLoader client:only />
         </div>
 
         <div class="vote-container"><Vote client:only /></div>
