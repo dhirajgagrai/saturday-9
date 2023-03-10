@@ -1,20 +1,22 @@
-<script lang="ts">
-    import { onMount } from "svelte";
-    import type { User } from "@supabase/supabase-js";
-
-    import supabase from "@config/supabase";
-
-    interface MovieData {
+<script lang="ts" context="module">
+    export interface MovieData {
         movies: {
             id: number;
             name: string;
             img_url: string;
         };
     }
+</script>
 
-    let activeMovies: MovieData[];
+<script lang="ts">
+    import { onMount } from "svelte";
+    import type { User } from "@supabase/supabase-js";
+
+    import supabase from "@config/supabase";
+
+    export let activeMovies: MovieData[] | null;
+
     let votedMovie: number = 0;
-    let loading: boolean = true;
 
     supabase.auth.onAuthStateChange((event, session) => {
         if (!session?.user) {
@@ -27,14 +29,7 @@
             data: { session },
         } = await supabase.auth.getSession();
 
-        const { data: moviesData }: { data: MovieData[] | null } =
-            await supabase.from("active_movies").select("movies(*)");
-        if (moviesData) {
-            activeMovies = moviesData;
-        }
-
         await getVotedMovie(session?.user);
-        loading = false;
     });
 
     async function getVotedMovie(user: User | undefined) {
@@ -69,11 +64,7 @@
     }
 </script>
 
-{#if loading}
-    <div class="skeleton-wrapper">
-        <div class="skeleton"><h2>&nbsp;</h2></div>
-    </div>
-{:else if !activeMovies}
+{#if !activeMovies}
     <h2 class="vote-status">No voting for this week</h2>
 {:else}
     <h2 class="vote-status">Vote for next Saturday</h2>
@@ -178,24 +169,5 @@
     }
     .vote-button:is(:hover) {
         background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .skeleton-wrapper {
-        overflow: hidden;
-        border-radius: 0.6rem;
-    }
-    .skeleton {
-        background-color: #fff;
-        height: 100%;
-        border-radius: 0.6rem;
-        animation: skeleton-loading 1.2s ease-in-out infinite;
-    }
-    @keyframes skeleton-loading {
-        0% {
-            transform: translateX(-100%);
-        }
-        100% {
-            transform: translateX(100%);
-        }
     }
 </style>

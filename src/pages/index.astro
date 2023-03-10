@@ -1,11 +1,22 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Card from "@components/Card.astro";
-import Vote from "@components/Vote.svelte";
+import Vote, { MovieData } from "@components/Vote.svelte";
 import LoginLoader from "@components/LoginLoader.svelte";
+
+import supabase from "@config/supabase";
+
+const { data: moviesData }: { data: MovieData[] | null } = await supabase
+    .from("active_movies")
+    .select("movies(*)");
+
+const urls: string[] = [];
+moviesData?.forEach(({ movies: m }) => {
+    urls.push(m.img_url);
+});
 ---
 
-<Layout title="Saturday Night at 9">
+<Layout title="Saturday Night at 9" prefetch_urls={urls}>
     <main>
         <div class="header">
             <h1 class="title">
@@ -30,7 +41,7 @@ import LoginLoader from "@components/LoginLoader.svelte";
             <LoginLoader client:only />
         </div>
 
-        <div class="vote-container"><Vote client:only /></div>
+        <div class="vote-container"><Vote activeMovies={moviesData} client:only /></div>
     </main>
 </Layout>
 
