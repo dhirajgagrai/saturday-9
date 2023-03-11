@@ -31,11 +31,13 @@ moviesData?.forEach(({ movies: m }) => {
                     href="/archive"
                     title="Archive"
                     body="Archive of the movies that we have already watched."
+                    blank={false}
                 />
                 <Card
                     href="/discord"
                     title="Discord"
                     body="Join our Discord to attend Saturday Night at 9."
+                    blank={true}
                 />
             </ul>
             <LoginLoader client:only />
